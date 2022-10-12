@@ -18,11 +18,17 @@ st.error("Error는 빨간색") # 빨간 영역표시
 
 # dataframe
 
-df = pd.read_csv("ec.csv",encoding="cp949")
+# df = pd.read_csv("ec.csv",encoding="cp949")
+df = pd.DataFrame({
+  'first column': [1, 2, 3, 4],
+  'second column': [10, 20, 30, 40],
+  'third cloumn' : ["a","b","c","d"]
+})
+
 st.dataframe(df)
 
-a = df['승용'].unique() # unique() : 고유값
-st.text("승용은" + str(a) + "대 이다")
+a = df['second column'].unique() # unique() : 고유값
+st.text("second column은" + str(a) + "대 이다")
 
 st.write('head',df.head()) # head() 앞에서 5개
 st.write('tail',df.tail()) # tail() 뒤에서 5개
@@ -31,15 +37,16 @@ st.write('tail',df.tail()) # tail() 뒤에서 5개
 # 버튼 만들기
 
 st.title("Make Button")
-if st.button("승용"):
-    st.write("Bye")
-    st.dataframe(df['승용'].unique())
+if st.button("click me!"):
+    st.subheader('second cloumn.unique')
+    st.dataframe(df['second column'].unique())
 else :
     st.write("Hi")
 
 st.title("Make Button")
-if st.button("승합"):    
-    st.dataframe(df['승합'].unique())
+if st.button("click me"):    
+    st.subheader('third cloumn.unique')
+    st.dataframe(df['third cloumn'].unique())
 else :
     st.write("Hi")
 
@@ -55,17 +62,15 @@ a = st.radio("정렬방식", pd.Series(["오름차순","내림차순"]))
 b = ("오름차순","내림차순")
 if a == b[0]:
 # if a == "오름차순" :
-    st.dataframe(df.sort_values("승용"))
+    st.dataframe(df.sort_values("second column"))
 else :
-    st.dataframe(df.sort_values("승용",ascending=False))
+    st.dataframe(df.sort_values("second column",ascending=False))
 
 # 체크박스 (체크하면 True)
 
-if st.checkbox("a"):
-    st.write("A")
+if st.checkbox("체크할때만 나옴"):
+    st.write("Hi")
     st.dataframe(df.head())
-else:
-    st.text("B")
 
 # 셀렉트박스 (여러개 중에서 1개만 고르기)
 st.title('IMI CCI')

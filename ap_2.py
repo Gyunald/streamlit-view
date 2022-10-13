@@ -1,3 +1,4 @@
+import secrets
 import numpy as np
 import altair as alt
 import pandas as pd
@@ -105,8 +106,15 @@ import time
 
 import streamlit as st
 
-st.title('st.secrets')
+# Everything is accessible via the st.secrets dict:
 
-st.secrets['name']
-st.secrets['pass']
-st.secrets["a"]["b"]
+st.write("DB username:", st.secrets["db_username"])
+st.write("DB password:", st.secrets["db_password"])
+st.write("My cool secrets:", st.secrets["my_cool_secrets"]["things_i_like"])
+
+import os
+
+st.write(
+    "Has environment variables been set:",
+    os.environ["db_username"] == st.secrets["db_username"],
+)

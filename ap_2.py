@@ -107,4 +107,6 @@ import streamlit as st
 
 st.title('st.secrets')
 
-st.write(st.secrets['name'])
+st.secrets['name']
+st.secrets['pass']
+st.secrets["a"]["b"]

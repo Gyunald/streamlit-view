@@ -21,8 +21,8 @@ with col3:
         if not tap.isdigit():
             if conversion:
                 st.write(
-                round(int(tap[0]) / int(tap[2]) * 25.4 , 3),
-                round((int(tap[0]) / int(tap[2]) * 25.4) - (25.4 / nums),2),
+                round(int(tap[:tap.index('/')]) / int(tap[tap.index('/')+1:]) * 25.4 , 3),
+                round((int(tap[:tap.index('/')]) / int(tap[tap.index('/')+1:]) * 25.4) - (25.4 / nums),2),
                 round(25.4 / nums, 3))
                     
         if tap.isdigit():

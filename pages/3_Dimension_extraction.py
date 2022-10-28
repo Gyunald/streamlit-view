@@ -5,10 +5,12 @@ import io
 from PIL import Image
 import time
 
+
 if 'ocr' not in st.session_state:
     st.session_state.ocr = {}
-a = st.empty()
+
 uploaded_file = st.file_uploader("Choose a file")
+
 if uploaded_file:
     st.image(uploaded_file)
     bar = st.progress(0)
@@ -30,10 +32,15 @@ if uploaded_file:
     for i in result:
         st.session_state.ocr[i[1]] = float(i[1]) * 25.4
 
-    col1, col2, = st.columns([1,1])
-
     df = pd.DataFrame({'inch' : st.session_state.ocr.keys(), 'mm' : st.session_state.ocr.values()})
-
+    col1, col2, = st.columns([1,2])
     with col1:
+        hide_table_row_index = """
+            <style>
+            thead tr th:first-child {display:none}
+            tbody th {display:none}
+            </style>
+            """
+        st.markdown(hide_table_row_index, unsafe_allow_html=True)
         st.table(df)
         st.session_state.ocr = {}

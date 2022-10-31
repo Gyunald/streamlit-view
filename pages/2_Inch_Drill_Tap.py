@@ -37,8 +37,8 @@ with col3:
 with col4:
     with st.form("time",clear_on_submit=False):
         holes = st.number_input('Hole Times',1)
-        f = st.number_input('FEED',10)
-        z = st.number_input('Z',10)
+        f = st.number_input('Feed',value=100.0, step=0.1)
+        z = st.number_input('Z',value=10.0, step=0.1)
         q = st.number_input('Q',value=0.5, step=0.1)
         r = st.number_input('R',value=0.1,step=0.1)
         t = r * (z//q)
@@ -51,11 +51,7 @@ with col4:
         conversion2 = st.form_submit_button("G73")
 
         if conversion1:
-            st.write(round(float(time),2),'s')
-            st.write(int(time/60),'m') 
-            st.write(int(time / 60) // 60,'h',int(time/60) % 60,'m')
+            st.write(int(time/60) // 60,'h',int(time/60) % 60,'m',int(time % 60),'s')
         
         if conversion2:
-            st.write(round(float(time2),2),'s')
-            st.write(int(time2/60),'m') 
-            st.write(int(time2 / 60) // 60,'h',int(time2/60) % 60,'m')
+            st.write(int(time2 / 60) // 60,'h',int(time2/60) % 60,'m',int(time2 % 60),'s')

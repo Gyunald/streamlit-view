@@ -14,38 +14,53 @@ with col2:
 
 with col3:
     with st.form("my_form",clear_on_submit=False):
-        tap = st.text_input("Inch Tap",placeholder='ex) 1, 3/8')
-        nums = st.number_input("Threads",0)
-        rpm = st.number_input("RPM",0)
-
+        tap = st.text_input("Inch Tap",placeholder='ex) 1-8, 7/8-9')
+        rpm = st.text_input("RPM",value=100)
         conversion = st.form_submit_button("CONVERSION")
-            
-        if not tap.isdigit():
-            if conversion:
-                st.write(
-                round(int(tap[:tap.index('/')]) / int(tap[tap.index('/')+1:]) * 25.4 , 2),
-                round((int(tap[:tap.index('/')]) / int(tap[tap.index('/')+1:]) * 25.4) - (25.4 / nums),2),
-                round(25.4 / nums, 2))
-                st.write('s',rpm, 'p',round(25.4 / nums,2), 'f',round(rpm *25.4 / nums,2))
-        if tap.isdigit():
-            if conversion:
-                st.write(
-                round(int(tap) * 25.4, 2),
-                round((int(tap) * 25.4) - (25.4 / nums),2),
-                round(25.4 / nums,3))            
-                st.write('s',rpm, 'p',round(25.4 / nums,2), 'f',round(rpm *25.4 / nums,2))
+        
+        if conversion:
+            if tap and rpm != "" and '-' in tap:
+                if '/' not in tap:
+                    denominator = int(tap[:tap.index('-')])
+                    tap_thread = int(tap[tap.index('-')+1:])
+                    drill = denominator * 25.4
+                    tap = (denominator * 25.4) - (25.4 / tap_thread)
+                    pitch = 25.4 / tap_thread
+                    feed = round(int(rpm)*pitch,2)
+
+                    st.write(round(drill,3))
+                    st.write(round(tap,2))
+                    st.write(round(pitch,3))
+                    st.write('s',int(rpm),'f',feed)
+
+                else:
+                    numerator = int(tap[:tap.index('/')])
+                    denominator = int(tap[tap.index('/')+1 : tap.index('-')])
+                    tap_thread = int(tap[tap.index('-')+1:])
+                    drill = (numerator / denominator) * 25.4
+                    tap = (numerator / denominator) * 25.4 - (25.4 / tap_thread)
+                    pitch = 25.4 / tap_thread
+                    feed = round(int(rpm)*pitch,2)
+
+                    st.write(round(drill,2))
+                    st.write(round(tap,2))
+                    st.write(round(pitch,3))
+                    st.write('s',int(rpm),'f',feed)
+
+            else:
+                st.warning('나사산을 입력하세요. ex) 1-8')
+
 with col4:
     with st.form("time",clear_on_submit=False):
         holes = st.number_input('Holes',1)
-        f = st.number_input('Feed',value=100.0, step=0.1)
+        f = st.number_input('Feed',value=100, step=10)
         z = st.number_input('Z',value=10.0, step=0.1)
         q = st.number_input('Q',value=0.5, step=0.1)
         r = st.number_input('R',value=0.1,step=0.1)
         t = r * (z//q)
-        next = (holes - 1) * 1
-        
-        time = ((z / (f / 60)) + next) * (holes)
-        time2 = ((((z + t) / (f / 60)) + ((z//q) * 0.4)) + next) * holes
+        move_time = 1
+        time = (((z / (f / 60))) * (holes * move_time)) 
+        time2 = (((z + t) / (f / 60))  * (holes * (move_time))) 
 
         conversion1 = st.form_submit_button("G81")
         conversion2 = st.form_submit_button("G73")

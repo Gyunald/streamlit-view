@@ -3,6 +3,21 @@ import streamlit as st
 col1, col2 = st.columns([1,1])
 col3, col4 = st.columns([1,1])
 
+def output_1():
+    return \
+            st.write('D',round(drill,2)),\
+            st.write('T',tap_pi),\
+            st.write('P',round(pitch,3)),\
+            st.write('S',int(rpm),'F',feed),\
+            st.write('Z',round(-z1,2),round(-z2,2))
+def output_2():
+    return \
+        st.write('D',round(drill,2)),\
+        st.write('T',tap_pi),\
+        st.write('P',round(pitch,3)),\
+        st.write('S',int(rpm),'F',feed),\
+        st.write('Z',round(-z1,2))
+
 with col1:
     drill_pi = st.number_input("Drill Pi",1.0)
     st.write(round(25.4 * drill_pi,2))
@@ -15,40 +30,44 @@ with col2:
 with col3:
     with st.form("my_form",clear_on_submit=False):
         tap = st.text_input("Inch Tap",placeholder='ex) 1-8, 7/8-9')
+        deep = st.text_input("Deep",placeholder='ex) 1.5-2.5')
         rpm = st.text_input("RPM",value=100)
         conversion = st.form_submit_button("CONVERSION")
         
-        if conversion:
-            if tap and rpm != "" and '-' in tap:
-                if '/' not in tap:
-                    denominator = int(tap[:tap.index('-')])
-                    tap_thread = int(tap[tap.index('-')+1:])
-                    drill = denominator * 25.4
-                    tap = (denominator * 25.4) - (25.4 / tap_thread)
-                    pitch = 25.4 / tap_thread
-                    feed = round(int(rpm)*pitch,2)
-
-                    st.write(round(drill,3))
-                    st.write(round(tap,2))
-                    st.write(round(pitch,3))
-                    st.write('s',int(rpm),'f',feed)
-
-                else:
+        try:
+            if conversion:
+                if '/' in tap :
                     numerator = int(tap[:tap.index('/')])
                     denominator = int(tap[tap.index('/')+1 : tap.index('-')])
                     tap_thread = int(tap[tap.index('-')+1:])
-                    drill = (numerator / denominator) * 25.4
-                    tap = (numerator / denominator) * 25.4 - (25.4 / tap_thread)
+                    tap_pi = (numerator / denominator) * 25.4
+                    drill = (numerator / denominator) * 25.4 - (25.4 / tap_thread)
+                    pitch = 25.4 / tap_thread
+                    feed = round(int(rpm)*pitch,3)
+                    if '-' in deep :
+                        z1 = float(deep[:deep.index('-')]) * 25.4
+                        z2 = float(deep[deep.index('-')+1:]) * 25.4
+                        output_1()
+                    else:
+                        z1 = float(deep) * 25.4
+                        output_2()
+                    
+                else:  
+                    integer = int(tap[:tap.index('-')])
+                    tap_thread = int(tap[tap.index('-')+1:])
+                    tap_pi = integer * 25.4
+                    drill = (integer * 25.4) - (25.4 / tap_thread)
                     pitch = 25.4 / tap_thread
                     feed = round(int(rpm)*pitch,2)
-
-                    st.write(round(drill,2))
-                    st.write(round(tap,2))
-                    st.write(round(pitch,3))
-                    st.write('s',int(rpm),'f',feed)
-
-            else:
-                st.warning('나사산을 입력하세요. ex) 1-8')
+                    if '-' in deep :
+                        z1 = float(deep[:deep.index('-')]) * 25.4
+                        z2 = float(deep[deep.index('-')+1:]) * 25.4
+                        output_1() 
+                    else:
+                        z1 = float(deep) * 25.4
+                        output_2()
+        except ValueError:
+            st.warning('Please enter a value.')
 
 with col4:
     with st.form("time",clear_on_submit=False):

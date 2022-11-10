@@ -8,14 +8,14 @@ import time
 
 if 'ocr' not in st.session_state:
     st.session_state.ocr = {}
-
-uploaded_file = st.file_uploader("Choose a file")
+st.subheader('Upload a single row image.')
+uploaded_file = st.file_uploader('😎')
 
 if uploaded_file:
     st.image(uploaded_file)
     bar = st.progress(0)
     bytes_data = uploaded_file.read()
-    image = Image.open(io.BytesIO(bytes_data))
+    image = Image.open(io.BytesIO(bytes_data)) 
 
     with st.empty():
         st.write('processing...⏳')

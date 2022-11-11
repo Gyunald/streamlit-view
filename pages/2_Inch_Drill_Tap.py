@@ -19,13 +19,13 @@ def output_2():
         st.write('Z',round(-z1,2))
 
 with col1:
-    drill_pi = st.number_input("Drill Pi",1.0)
-    st.write(round(25.4 * drill_pi,2))
+    drill_pi = st.number_input("Diameter",1.0)
+    st.write('ø',round(25.4 * drill_pi,2))
 
 with col2:
-    hole = st.number_input("Holes Angle",1)
-    st.write(round(360 / hole,3), 'x', hole)
-    st.write(round(360 / hole,3) / 2)
+    hole = st.number_input("Split Angle",1)
+    st.write('c',round(360 / hole,3) / 2,'˚')
+    st.write('h',round(360 / hole,3), '˚','x', hole)
 
 with col3:
     with st.form("my_form",clear_on_submit=False):
@@ -71,7 +71,7 @@ with col3:
 
 with col4:
     with st.form("time",clear_on_submit=False):
-        holes = st.number_input('Holes',1)
+        holes = st.number_input('Holes Time',1)
         f = st.number_input('Feed',value=100, step=10)
         z = st.number_input('Z',value=10.0, step=0.1)
         q = st.number_input('Q',value=0.5, step=0.1)

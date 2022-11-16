@@ -46,5 +46,6 @@ with c3:
     a2.loc['합계'] = a2[['세대수','인구','내국인','외국인']].sum()
     st.dataframe(a2.style.apply(draw_color, color='#17becf', subset=pd.IndexSlice[['합계'],'인구'],axis=1).format('{:,}'))
     st.subheader(f"운정구 비율 : {(sum(a.iloc[11:15,1]) / a.iloc[0,1]) * 100:.2f} %")
-with c4:   
+with c4:
+    aaa.rename({'파주시':'전월대비'},inplace=True)
     st.dataframe(aaa.style.applymap(color_negative_red).format('{:+,}'))

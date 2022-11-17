@@ -34,14 +34,14 @@ def m(month):
 
 def m_output():
     if len(globals()[f"date_{select_year}_{month}"]) > 0 :
-        st.dataframe(globals()[f"date_{select_year}_{month}"][0:1].style.apply(draw_color, color='#FFA07A', subset=pd.IndexSlice[['파주시'],'인구'],axis=1).format('{:,}'))
+        st.table(globals()[f"date_{select_year}_{month}"][0:1].style.apply(draw_color, color='#FFA07A', subset=pd.IndexSlice[['파주시'],'인구'],axis=1).format('{:,}'))
         total = globals()[f"date_{select_year}_{month}"].iloc[0,1]
         globals()[f"date_{select_year}_{month}"] = globals()[f"date_{select_year}_{month}"][11:15]
         globals()[f"date_{select_year}_{month}"].loc['합계'] = globals()[f"date_{select_year}_{month}"][['세대수','인구','내국인','외국인']].sum()
-        st.dataframe(globals()[f"date_{select_year}_{month}"].style.apply(draw_color, color='#17becf', subset=pd.IndexSlice[['합계'],'인구'],axis=1).format('{:,}'))        
+        st.table(globals()[f"date_{select_year}_{month}"].style.apply(draw_color, color='#17becf', subset=pd.IndexSlice[['합계'],'인구'],axis=1).format('{:,}'))        
         subtotal = globals()[f"date_{select_year}_{month}"].iloc[4,1]
         
-        st.subheader(f"인구비율 : { (subtotal / total) * 100:.2f} %")
+        st.subheader(f"인구 비율 : { (subtotal / total) * 100:.2f} %")
         
     else:
         st.write('No Data')
@@ -87,4 +87,4 @@ with c4:
     sub(month)    
     g = globals()[f"date_{select_year}_{month}"] - globals()[f"date_{select_year}_{month-1}"]
     g.rename({'파주시':'전월대비'},inplace=True)
-    st.dataframe(g.style.applymap(color_negative_red).format('{:+,}'))
+    st.table(g.style.applymap(color_negative_red).format('{:+,}'))

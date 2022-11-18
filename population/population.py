@@ -42,7 +42,10 @@ def m_output():
         st.table(globals()[f"date_{select_year}_{month}"].style.apply(draw_color, color='#17becf', subset=pd.IndexSlice[['합계'],'인구'],axis=1).format('{:,}'))        
         subtotal = globals()[f"date_{select_year}_{month}"].iloc[4,1]
         
-        st.subheader(f"인구 비율 : { (subtotal / total) * 100:.2f} %")
+        st.info(f"인구 비율 : { (subtotal / total) * 100:.2f} %")
+        st.success('GTX 운정신도시 오픈챗 https://open.kakao.com/o/gICcjcDb')
+        st.warning('참여코드 : 2023gtxa')
+        
         
     else:
         st.write('No Data')

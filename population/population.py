@@ -1,7 +1,8 @@
 import pandas as pd
 import streamlit as st
 
-main = 10
+main_year = 2
+main_month = 10
 
 file_path = 'https://raw.githubusercontent.com/Gyunald/streamlit-view/main/population/'
 rename_columns = {'등록인구':'인구','등록인구.3' : '내국인', '등록인구.6': '외국인'}
@@ -34,11 +35,11 @@ def m(month):
 
 def m_output():
     if len(globals()[f"date_{select_year}_{month}"]) > 0 :
-        st.dataframe(globals()[f"date_{select_year}_{month}"][0:1].style.apply(draw_color, color='#FFA07A', subset=pd.IndexSlice[['파주시'],'인구'],axis=1).format('{:,}'))
+        st.table(globals()[f"date_{select_year}_{month}"][0:1].style.apply(draw_color, color='#FFA07A', subset=pd.IndexSlice[['파주시'],'인구'],axis=1).format('{:,}'))
         total = globals()[f"date_{select_year}_{month}"].iloc[0,1]
         globals()[f"date_{select_year}_{month}"] = globals()[f"date_{select_year}_{month}"][11:15]
         globals()[f"date_{select_year}_{month}"].loc['합계'] = globals()[f"date_{select_year}_{month}"][['세대수','인구','내국인','외국인']].sum()
-        st.dataframe(globals()[f"date_{select_year}_{month}"].style.apply(draw_color, color='#17becf', subset=pd.IndexSlice[['합계'],'인구'],axis=1).format('{:,}'))        
+        st.table(globals()[f"date_{select_year}_{month}"].style.apply(draw_color, color='#17becf', subset=pd.IndexSlice[['합계'],'인구'],axis=1).format('{:,}'))        
         subtotal = globals()[f"date_{select_year}_{month}"].iloc[4,1]
         
         st.subheader(f"인구 비율 : { (subtotal / total) * 100:.2f} %")
@@ -54,16 +55,16 @@ def sub(month):
         globals()[f"date_{select_year}_{month}"] = csv_file(select_year)[c:c2].astype(int)
     return globals()
 
-year = 2022, 2021, 2020
+year = 2020, 2021, 2022
 
 c1,c2=st.columns([1,1])
 with c1:
-    select_year = st.selectbox('Year', year)
+    select_year = st.selectbox('Year', year, main_year)
     if select_year:
         csv_file(select_year)
         
 with c2:
-    month = st.selectbox('Month',range(1,12+1),main-1)
+    month = st.selectbox('Month',range(1,12+1),main_month-1)
 with st.expander(f"파주시 인구 - {month}월"):
     if select_year :
         m(month)
@@ -79,4 +80,4 @@ with c4:
     sub(month)    
     g = globals()[f"date_{select_year}_{month}"] - globals()[f"date_{select_year}_{month-1}"]
     g.rename({'파주시':'전월 대비'},inplace=True)
-    st.dataframe(g.style.applymap(color_negative_red).format('{:+,}'))
+    st.table(g.style.applymap(color_negative_red).format('{:+,}'))

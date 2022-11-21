@@ -3,6 +3,7 @@ import streamlit as st
 
 main_year = 2
 main_month = 10
+year = 2020, 2021, 2022
 
 file_path = 'https://raw.githubusercontent.com/Gyunald/streamlit-view/main/population/'
 rename_columns = {'등록인구':'인구','등록인구.3' : '내국인', '등록인구.6': '외국인'}
@@ -57,8 +58,6 @@ def sub(month):
         c2 = 18 * month
         globals()[f"date_{select_year}_{month}"] = csv_file(select_year)[c:c2].astype(int)
     return globals()
-
-year = 2020, 2021, 2022
 
 c1,c2=st.columns([1,1])
 with c1:
